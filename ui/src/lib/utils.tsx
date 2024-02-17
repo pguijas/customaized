@@ -19,11 +19,10 @@ const createProject = async (jobInfo) => {
 };
 
 const createHyperparams = async (hyperparamsInfo) => {
+  console.log("Hyperparams info:", hyperparamsInfo)
   const { data, error } = await supabaseAdmin
   .from('hyperparams')
-  .insert({
-    hyperparamsInfo
-  });
+  .insert(hyperparamsInfo);
   if (error) console.log(error)
 };
 
@@ -41,7 +40,7 @@ const uploadImage = async (file: File, filename: string) => {
   try {
     console.log(filename)
     const { data, error } = await supabaseAdmin.storage
-    .from(process.env.SUPABASE_BUCKET!)
+    .from("models")
     .upload('public/'+filename, file)
     if (error) console.log(error)
     if (data) console.log(data)

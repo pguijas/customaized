@@ -7,7 +7,7 @@ import PopupWindow from "../../components/PopupWindow.tsx";
 
 import imageSrc from '../../../public/selfie.jpg';
 
-import { createProject, viewProject, createHyperparams } from "../../lib/utils";
+import { createProject, viewProject, createHyperparams, uploadImage} from "../../lib/utils";
 
 
 export default function Models() {
@@ -52,20 +52,23 @@ export default function Models() {
         // Hyperparams
         const trainHyperparamsData = {
             job_id: jobId,
-            name: modelName,
+            name: "person_name",
+            value: modelName
         }
         createHyperparams(trainHyperparamsData)
 
         // Images
-        images.foreach((image) => {
-
+        for (const image of images) {
             // We cannot set a dict with 
             const imageHyperparam = {
+                job_id: jobId,
                 name: "image",
-                value: "..."
+                value: image.name
             }
             createHyperparams(imageHyperparam)
-        })
+
+            uploadImage(image, image.name)
+        }
 
         setIsPopupOpen(false);
     };
