@@ -163,3 +163,5 @@ Thumbs.db
 *.tar
 *.zip
 .DS_Store
+
+.next/
