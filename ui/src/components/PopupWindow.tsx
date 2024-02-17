@@ -7,15 +7,11 @@ const PopupWindow = ({ onClose, onSubmit }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // onSubmit(input1Value, input2Value);
-    console.log("Input 1:", input1Value);
-    console.log("Selected Images:", imageFiles);
+    onSubmit(input1Value, imageFiles);
   };
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
-    console.log("setting images", files.length, files)
-
     setImageFiles(files);
 };
 

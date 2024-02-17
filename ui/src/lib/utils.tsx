@@ -3,13 +3,26 @@ import { supabaseAdmin } from './supabase'
 // error, unassigned, running, finished
 // jobs, hyperparams
 
-const createProject = async () => {
-  const { data, error } = await supabaseAdmin
+const createProject = async (jobInfo) => {
+  console.log("Creating job...");
+
+  const {data, error} = await supabaseAdmin
   .from('jobs')
   .insert({
-    type: "mytype",
-    status: "pending",
-    model_name: "my_model",
+    type: jobInfo.type,
+    status: "unassigned",
+  })
+  .select();
+  if (error) console.log(error)
+  
+  return data[0].id;
+};
+
+const createHyperparams = async (hyperparamsInfo) => {
+  const { data, error } = await supabaseAdmin
+  .from('hyperparams')
+  .insert({
+    hyperparamsInfo
   });
   if (error) console.log(error)
 };
@@ -37,4 +50,4 @@ const uploadImage = async (file: File) => {
       }
 };
 
-export { createProject, viewProject, uploadImage };
+export { createProject, viewProject, uploadImage, createHyperparams };

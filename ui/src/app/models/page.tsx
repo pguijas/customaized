@@ -7,7 +7,7 @@ import PopupWindow from "../../components/PopupWindow.tsx";
 
 import imageSrc from '../../../public/selfie.jpg';
 
-import { viewProject } from "../../lib/utils";
+import { createProject, viewProject, createHyperparams } from "../../lib/utils";
 
 
 export default function Models() {
@@ -17,6 +17,7 @@ export default function Models() {
     useEffect(() => {
         viewProject()
           .then(data => {
+            data = data?.slice(0, 4)
             data = data.map((item, index) => (
                 {
                     id: item.id,
@@ -39,8 +40,33 @@ export default function Models() {
         setIsPopupOpen(false);
     };
 
-    const handleSubmitPopup = (input1Value, input2Value) => {
-        console.log("Submitted values:", input1Value, input2Value);
+    const handleSubmitPopup = async (modelName, images) => {
+        console.log("Submitted values:", modelName, images);
+
+        // Jobs
+        const trainJobData = {
+            type: "train",
+        }
+        const jobId = await createProject(trainJobData)
+
+        // Hyperparams
+        const trainHyperparamsData = {
+            job_id: jobId,
+            name: modelName,
+        }
+        createHyperparams(trainHyperparamsData)
+
+        // Images
+        images.foreach((image) => {
+
+            // We cannot set a dict with 
+            const imageHyperparam = {
+                name: "image",
+                value: "..."
+            }
+            createHyperparams(imageHyperparam)
+        })
+
         setIsPopupOpen(false);
     };
 
