@@ -2,9 +2,10 @@
 
 # 🖌️ CustomAIzed
 
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](code_of_conduct.md)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Stars](https://img.shields.io/github/stars/pguijas/artiluxio?color=green&label=Stars)
+
+
 
 
 ## 🔧 Setup
@@ -49,6 +50,10 @@ npm run dev
 
 ## 📜 License
 ## 👫 Contributing
+Contributions are always welcome.
+
+See CONTRIBUTING.md for ways to get started. And please, respect the code of conduct for this project specified in CODE_OF_CONDUCT.md.
+
 ## 📈 Future work
 
 
