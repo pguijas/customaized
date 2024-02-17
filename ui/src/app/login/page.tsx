@@ -1,24 +1,37 @@
 import Link from 'next/link';
+import React, { Suspense } from 'react';
+import NavBarHome from "@/components/NavBarHome";
+
 
 export default async function Login() {
     return (
-        <div className="w-full lg:max-w-xl p-6 space-y-8 sm:p-8 bg-white rounded-lg shadow-xl bg-gray-150 items-center">
+        <div><section>
+        <Suspense
+            fallback={
+                <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between h-[69px]" />
+            }>
+            <NavBarHome />
+        </Suspense>
+        </section>
+        <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+        <div className="w-full max-w-6xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
             <h2 className="text-2xl font-bold text-gray-900">
                 Sign in to CustomAIzed
             </h2>
             <form className="mt-8 space-y-6" action="#">
+                <center>
                 <div>
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your
                         email</label>
                     <input type="email" name="email" id="email"
-                           className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-30 p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            placeholder="name@company.com" defaultValue="admin@customaized.com" required/>
                 </div>
                 <div>
                     <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Your
                         password</label>
                     <input type="password" name="password" id="password" placeholder="••••••••"
-                           className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-30 p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            defaultValue="cAHJ_18$iOIA9" required/>
                 </div>
                 <div className="flex items-start">
@@ -32,6 +45,7 @@ export default async function Login() {
                             device</label>
                     </div>
                 </div>
+                               </center>
                 <div className="container py-5 px-5 mx-0 min-w-full flex flex-col items-center">
                 <Link href="/models">
                     <button type="button"
@@ -42,6 +56,7 @@ export default async function Login() {
                 </div>
             </form>
         </div>
+        </div></div>
     )
         ;
 

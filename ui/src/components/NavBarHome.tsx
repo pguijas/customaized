@@ -6,7 +6,7 @@ export default async function NavBar() {
     return (
         <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
             <div className="flex gap-2 h-full w-28">
-                <a href="/ui/public" className="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src={Logo.src} alt="CustomAIzed Logo" className="h-auto max-w-full" />
                 </a>
             </div>
@@ -20,7 +20,7 @@ export default async function NavBar() {
                         Login
                     </button>
                 </Link>
-                <Link href="/signup">
+                <Link href="/models">
                     <button
                         className="flex-shrink-0 border-transparent border-4 bg-gray-100 hover:bg-gray-100 text-sm py-1 px-2 rounded"
                         type="button"
