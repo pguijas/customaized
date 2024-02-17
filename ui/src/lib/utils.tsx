@@ -24,17 +24,18 @@ const viewProject = async () => {
   return data
 };
 
-const uploadImage = async (file: File) => {
-    try {
-        const { data, error } = await supabaseAdmin.storage
-        .from('test_bucket')
-        .upload('public/img1.png', file)
-        if (error) console.log(error)
-        if (data) console.log(data)
-      } catch (e: any) {
-        // Handle errors here
-        console.error(e)
-      }
+const uploadImage = async (file: File, filename: string) => {
+  try {
+    console.log(filename)
+    const { data, error } = await supabaseAdmin.storage
+    .from(process.env.SUPABASE_BUCKET!)
+    .upload('public/'+filename, file)
+    if (error) console.log(error)
+    if (data) console.log(data)
+  } catch (e: any) {
+    // Handle errors here
+    console.error(e)
+  }
 };
 
 export { createProject, viewProject, uploadImage };
