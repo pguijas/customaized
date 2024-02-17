@@ -14,14 +14,12 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-env/
 #build/
 develop-eggs/
 dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -80,8 +78,6 @@ target/
 # celery beat schedule file
 celerybeat-schedule
 
-# dotenv
-.env
 
 # virtualenv
 venv/
