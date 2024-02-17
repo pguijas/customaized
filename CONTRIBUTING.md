@@ -21,7 +21,7 @@ For more information, see "[Creating a pull request](https://docs.github.com/en/
 
 ## License
 
-By contributing to CustomAIzed, you agree that your contributions will be licensed under its [GNU General Public License, Version 3.0](https://www.gnu.org/licenses/gpl-3.0.en.html).
+By contributing to CustomAIzed, you agree that your contributions will be licensed under its [APACHE LICENSE, VERSION 2.0](https://www.apache.org/licenses/LICENSE-2.0).
 
 ## Code of Conduct
 

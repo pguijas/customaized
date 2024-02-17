@@ -1,7 +1,20 @@
-import { supabaseAdmin } from './supabase'
+/*
+Copyright 2024 Pedro Guijas Bravo, Ángel Miguélez Millos, Elena Sánchez González, Héctor Padín Torrente 
 
-// error, unassigned, running, finished
-// jobs, hyperparams
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+import { supabaseAdmin } from './supabase'
 
 const createProject = async (jobInfo) => {
   const {data, error} = await supabaseAdmin
@@ -101,12 +114,14 @@ const getInferenceResults = async (jobId) => {
     .eq('value', resultPath);
 
   const inferenceIds = data?.map((item) => item.job_id);
+  console.log("Results", inferenceIds)
 
   // Get the image paths of the inference jobs
   var { data, error } = await supabaseAdmin
     .from('jobs')
     .select("result_path")
-    .in('id', inferenceIds);
+    .in('id', inferenceIds)
+    .order('id', {ascending: false});
 
   const inferenceImages = data?.map((item) => item.result_path);
 
