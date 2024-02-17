@@ -38,7 +38,8 @@ const viewProject = async () => {
   const { data, error } = await supabaseAdmin
   .from('jobs')
   .select("id, type, status, hyperparams (name, value)")
-  .eq("type", "train");
+  .eq("type", "train")
+  .order('id');
   if (error) console.log(error)
   if (data) console.log(data)
   return data

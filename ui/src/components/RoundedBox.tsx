@@ -10,8 +10,8 @@ import loadingImage from '../../public/loading.gif';
 
 
 interface RoundedBoxProps {
-  status: ReactNode;
-  name: ReactNode;
+  status?: ReactNode;
+  name?: ReactNode;
   children?: ReactNode;
   imageUrl?: string;
   onClick?: () => void; 
@@ -25,11 +25,17 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
     }
   };
 
+  const box_style_bg = imageUrl ? ({
+    backgroundImage: `url(${imageUrl})`
+    
+  }) : {};
+
   return (
-    <div className={styles.boxContainer} onClick={handleClick}>
-      {imageUrl ? (
-        <img src={imageUrl} className={styles.image} alt="Image" />
-      ) : children ? (
+    <>    
+
+
+    <div className={styles.boxContainer} onClick={handleClick} style={box_style_bg}>
+      {children ? (
 
       <div className={styles.content}>{children}</div>
       ) :
@@ -38,12 +44,18 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
         <div className={styles.content}>
           
           {status === 'running' ? (
-            <img src={loadingImage.src} alt="Loading" />
+          <div className='flex space-x-2 justify-center items-center h-screen'>
+            <span className='sr-only'>Loading...</span>
+             <div className='h-3 w-3 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
+           <div className='h-3 w-3 bg-black rounded-full animate-bounce [animation-delay:-0.15s]'></div>
+           <div className='h-3 w-3 bg-black rounded-full animate-bounce'></div>
+         </div>
 
-          ) : status === 'crashed' ? (
+
+          ) : status === 'error' ? (
             <img src={redCross.src} alt="Error" />
 
-          ) : status === 'unassigned' || status === 'creating' ? (
+          ) : status === 'unassigned' ? (
             <img src={sandClock.src} alt="Unassigned" />
           ) :
           
@@ -54,23 +66,7 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
         </div>
       )}
     </div>
-    // <div className={styles.boxContainer}>
-    //   {imageUrl ? (
-    //     <img src={imageUrl} className={styles.image} alt="Image" />
-    //   ) : (
-    //     <div className={styles.content}>
-    //       <div className={styles.status}>{status}</div>
-    //       <div className={styles.name}>{name}</div>
-    //     </div>
-    //   )}
-    // </div>
-    // <div className={styles.boxContainer}>
-    //   {imageUrl ? (
-    //     <img src={imageUrl} className={styles.image} alt="Image" />
-    //   ) : (
-    //     <div className={styles.content}>{children}</div>
-    //   )}
-    // </div>
+    </>
   );
 };
 
