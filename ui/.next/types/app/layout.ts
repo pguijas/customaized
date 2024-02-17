@@ -1,4 +1,4 @@
-// File: C:\Users\elena\OneDrive\Documentos\HackUDC\apaño\customaized\ui\app\layout.tsx
+// File: /home/anxomm/Desktop/HackUDC2024/customaized/ui/app/layout.tsx
 import * as entry from '../../../app/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

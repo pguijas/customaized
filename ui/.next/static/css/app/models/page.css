@@ -1,0 +1,100 @@
+/*!****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[11].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[11].oneOf[7].use[3]!./components/RoundedBox.module.css ***!
+  \****************************************************************************************************************************************************************************************************************************************************************************/
+.RoundedBox_boxContainer__c8_91 {
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #97f8fb43;
+    width: 200px;
+    height: 150px;
+    margin-bottom: 20px;
+  }
+  
+  .RoundedBox_image__25jCy {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  
+  .RoundedBox_content__UHxRs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .RoundedBox_status__zM0f8 {
+    text-align: center;
+    height: 500%; /* Set height to 50% */
+    display: flex;
+    align-items: center; /* Center vertically */
+  }
+
+  .RoundedBox_name__rNij9 {
+    /* Add any additional styling you want for the content */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100%;
+
+  }
+  
+/*!*****************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[11].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[11].oneOf[7].use[3]!./components/PopupWindow.module.css ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************/
+.PopupWindow_popup__DloDj {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 9999;
+  }
+  
+.PopupWindow_popupContent__Csu8Y {
+text-align: center;
+}
+
+.PopupWindow_closeButton__XjHg2 {
+position: absolute;
+top: 5px;
+right: 5px;
+background: none;
+border: none;
+cursor: pointer;
+font-size: 16px;
+color: #888;
+}
+
+.PopupWindow_popup__DloDj .PopupWindow_closeButton__XjHg2:hover {
+color: #333;
+}
+
+.PopupWindow_popup__DloDj input {
+width: 100%;
+padding: 8px;
+margin-bottom: 10px;
+border: 1px solid #ccc;
+border-radius: 4px;
+box-sizing: border-box;
+}
+
+.PopupWindow_popup__DloDj button {
+padding: 10px 20px;
+background-color: #007bff;
+color: white;
+border: none;
+border-radius: 4px;
+cursor: pointer;
+}
+
+.PopupWindow_popup__DloDj button:hover {
+background-color: #0056b3;
+}
+
