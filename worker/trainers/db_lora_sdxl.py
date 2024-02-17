@@ -22,7 +22,7 @@ import os
 import shutil
 import warnings
 from pathlib import Path
-from dataset import DreamBoothDataset, PromptDataset
+from trainers.dataset import DreamBoothDataset, PromptDataset
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -90,19 +90,19 @@ def import_model_class_from_model_name_or_path(
 
 #validation_prompt
 
-def get_args(instance_prompt, num_train_epochs=222, batch_size=4, model="stabilityai/stable-diffusion-xl-base-1.0"):
+def get_args(instance_prompt, num_train_epochs=222, batch_size=4, model="stabilityai/stable-diffusion-xl-base-1.0", instance_data_dir="tmp", validation_epochs=50):
     args = argparse.Namespace(
         pretrained_model_name_or_path=model,
         pretrained_vae_model_name_or_path="madebyollin/sdxl-vae-fp16-fix",
         revision=None,
         variant=None,
-        instance_data_dir="dog",
+        instance_data_dir=instance_data_dir,
         instance_prompt=instance_prompt,
         train_batch_size=batch_size,
         sample_batch_size=batch_size,
         num_train_epochs=num_train_epochs,
         num_validation_images=4,
-        validation_epochs=50,
+        validation_epochs=validation_epochs,
         repeats=1,
         class_data_dir=None,
         class_prompt=None,
@@ -1168,7 +1168,7 @@ def train(args):
     accelerator.end_training()
 
     # return the lora path
-    return args.output_dir
+    return os.path.join(args.output_dir, "pytorch_lora_weights.safetensors")
 
 if __name__ == "__main__":
     args = get_args()

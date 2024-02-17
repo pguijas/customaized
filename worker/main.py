@@ -2,9 +2,8 @@ import os
 import time
 from supabase import create_client, Client
 import logging
-logging.disable(logging.CRITICAL)
 from trainers.db_lora_sdxl import train, get_args
-from inferences.db_lora_sdxl import infer
+from inferences.db_lora_sdxl import inference
 
 """
 export SUPABASE_URL="https://onquttuaucnydonwfoul.supabase.co"
@@ -30,7 +29,11 @@ Cosas:
     - cachear
 
 Limpiar cosas que no necesitamos como:
-    - sdxl de la bd
+    - sdxl de la bd -> meterle realitic vision (al final)
+
+Poner validation solo si modo debug
+
+cambiar status a unassinged/running/finished/error
 """
 
 # Worker Name
@@ -39,16 +42,30 @@ sleep_time = 2
 tmp_folder = "tmp"
 if not os.path.exists(tmp_folder):
     os.makedirs(tmp_folder)
-
+debug = True
+if not debug:
+    logging.basicConfig(level=logging.CRITICAL)
 
 # Create a Supabase client
 url: str = os.environ.get("SUPABASE_URL") # setted with $ export SUPABASE_URL="https://<your-uuid>.supabase.co"
 key: str = os.environ.get("SUPABASE_KEY")
 supabase: Client = create_client(url, key)
 
+def get_param_from_query(query, param, only_one=True):
+    res = [ p["value"] for p in query if p["name"] == param ]
+
+    # Check
+    if len(res) == 0:
+        raise ValueError(f"Parameter {param} not found")
+
+    # Return
+    if only_one:
+        return res[0]
+    return res
+
 while True:
-    # Find a job to process
-    job = supabase.table("jobs").select("*").eq("status", -1).limit(1).execute().data
+    # Find a job to process (first come, first served)
+    job = supabase.table("jobs").select("*").eq("status", -1).order("created_at", desc=False).range(0, 1).execute().data
     if job == []:
         print(f"No jobs to process (sleeping for {sleep_time} seconds)")
         time.sleep(sleep_time)
@@ -64,20 +81,38 @@ while True:
     # Perform the job
     if job[0]["type"] == "train":
 
-        # Download the images
-        imgs = [ im["value"] for im in hyperparams if im["name"] == "image" ]
-        if len(imgs) == 0:
-            logging.error("No images found")
-            supabase.table("jobs").update({"status": 100, "error_message": "No images found"}).eq("id", job[0]["id"]).execute()
+        # Get hyperparameters
+        logging.info("Getting hyperparameters")
+        try:
+            # Training images
+            imgs = get_param_from_query(hyperparams, "image", only_one=False)
+            # Model name
+            model_name = get_param_from_query(hyperparams, "model_name")
+            # Person name
+            person_name = get_param_from_query(hyperparams, "person_name")
+        
+        except ValueError as e:
+            logging.error(f"Error: {e}")
+            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
             continue
 
+        # Download the images
+        logging.info(f"Downloading {len(imgs)} images")
         for img in imgs:
             with open(os.path.join(tmp_folder, img), 'wb') as f:
                 res = supabase.storage.from_("images").download(img)
                 f.write(res)
 
         # Train the model
-        model_path = train(get_args(f"a photo of {job[0]["name"]}"))
+        logging.info("Training the model")
+        if not debug:
+            validation_epochs = 99999999999
+        try:
+            model_path = train(get_args(f"a photo of {person_name} the person", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=220))
+        except Exception as e:
+            logging.error(f"Error: {e}")
+            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            continue
 
         # Upload the fine-tuned model
         with open(model_path, 'rb') as f:
@@ -86,8 +121,37 @@ while True:
 
     elif job[0]["type"] == "infer":
 
-        # Download the model 
-        raise NotImplementedError("Not implemented yet")
+        # Download the model (job result_path)
+        try: 
+            model_name = get_param_from_query(hyperparams, "model_name")
+            tune_path = get_param_from_query(hyperparams, "tune_path")
+            prompt = get_param_from_query(hyperparams, "prompt")
+        except ValueError as e:
+            logging.error(f"Error: {e}")
+            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            continue
+        
+        # Check tune_path
+        with open(os.path.join(tmp_folder, tune_path), 'wb') as f:
+            res = supabase.storage.from_("models").download(tune_path)
+            if res is None:
+                logging.error("Model not found")
+                supabase.table("jobs").update({"status": 100, "error_message": "Model not found"}).eq("id", job[0]["id"]).execute()
+                continue 
+            f.write(res)
+
+        # Perform the inference
+        try:
+            res_path = inference(prompt, tune_path, model_base=model_name, tmp_folder=tmp_folder)
+        except Exception as e:
+            logging.error(f"Error: {e}")
+            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            continue
+
+        # Upload the result
+        with open(res, 'rb') as f:
+            result_name = f"result-{job[0]['id']}.png"
+            supabase.storage.from_("results").upload(file=f,path=result_name)
     
     else:
         logging.error("Unknown job type")
