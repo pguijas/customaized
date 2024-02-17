@@ -33,7 +33,8 @@ Limpiar cosas que no necesitamos como:
 
 Poner validation solo si modo debug
 
-cambiar status a unassinged/running/finished/error
+
+habrá que hashear tb las imágenes subidas x los usuarios
 """
 
 # Worker Name
@@ -66,7 +67,7 @@ def get_param_from_query(query, param, only_one=True):
 
 while True:
     # Find a job to process (first come, first served)
-    job = supabase.table("jobs").select("*").eq("status", -1).order("created_at", desc=False).range(0, 1).execute().data
+    job = supabase.table("jobs").select("*").eq("status", "unassinged").order("created_at", desc=False).range(0, 1).execute().data
     if job == []:
         print(f"No jobs to process (sleeping for {sleep_time} seconds)")
         time.sleep(sleep_time)
@@ -74,7 +75,7 @@ while True:
 
     # Set the job as assigned to this worker
     print(f"Assigning job {job[0]['id']} to {worker_name}")
-    supabase.table("jobs").update({"worker_assigned": worker_name, "status": 0}).eq("id", job[0]["id"]).execute()
+    supabase.table("jobs").update({"worker_assigned": worker_name, "status": "running"}).eq("id", job[0]["id"]).execute()
 
     # Load the images (and hyperparameters) from the job
     hyperparams = supabase.table("hyperparams").select("*").eq("job_id", job[0]["id"]).execute().data
@@ -94,7 +95,7 @@ while True:
         
         except ValueError as e:
             logging.error(f"Error: {e}")
-            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            supabase.table("jobs").update({"status": "crashed", "error_message": str(e)}).eq("id", job[0]["id"]).execute()
             continue
 
         # Download the images
@@ -112,13 +113,15 @@ while True:
             model_path = train(get_args(f"a photo of {person_name} the person", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=epochs))
         except Exception as e:
             logging.error(f"Error: {e}")
-            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            supabase.table("jobs").update({"status": "crashed", "error_message": str(e)}).eq("id", job[0]["id"]).execute()
             continue
 
         # Upload the fine-tuned model
         with open(model_path, 'rb') as f:
-            model_name = f"model-{job[0]['id']}.safetensors"
+            model_name = f"model-{job[0]['id']}-{time.time()}.safetensors"
             supabase.storage.from_("models").upload(file=f,path=model_name)
+
+        result = model_name
 
     elif job[0]["type"] == "infer":
 
@@ -129,7 +132,7 @@ while True:
             prompt = get_param_from_query(hyperparams, "prompt")
         except ValueError as e:
             logging.error(f"Error: {e}")
-            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            supabase.table("jobs").update({"status": "crashed", "error_message": str(e)}).eq("id", job[0]["id"]).execute()
             continue
         
         # Check tune_path
@@ -137,7 +140,7 @@ while True:
             res = supabase.storage.from_("models").download(tune_path)
             if res is None:
                 logging.error("Model not found")
-                supabase.table("jobs").update({"status": 100, "error_message": "Model not found"}).eq("id", job[0]["id"]).execute()
+                supabase.table("jobs").update({"status": "crashed", "error_message": "Model not found"}).eq("id", job[0]["id"]).execute()
                 continue 
             f.write(res)
 
@@ -146,21 +149,23 @@ while True:
             res_path = inference(prompt, tune_path, model_base=model_name, tmp_folder=tmp_folder)
         except Exception as e:
             logging.error(f"Error: {e}")
-            supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
+            supabase.table("jobs").update({"status": "crashed", "error_message": str(e)}).eq("id", job[0]["id"]).execute()
             continue
 
         # Upload the result
-        with open(res, 'rb') as f:
-            result_name = f"result-{job[0]['id']}.png"
+        with open(res_path, 'rb') as f:
+            result_name = f"result-{job[0]['id']}-{time.time()}.png"
             supabase.storage.from_("results").upload(file=f,path=result_name)
+
+        result = result_name
     
     else:
         logging.error("Unknown job type")
-        supabase.table("jobs").update({"status": 100, "error_message": "Unknown job type"}).eq("id", job[0]["id"]).execute()
+        supabase.table("jobs").update({"status": "crashed", "error_message": "Unknown job type"}).eq("id", job[0]["id"]).execute()
         continue
 
     # Set the job as finished
-    supabase.table("jobs").update({"status": 1}).eq("id", job[0]["id"]).execute()
+    supabase.table("jobs").update({"status": "finished", "result_path": result}).eq("id", job[0]["id"]).execute()
 
     # Clean the tmp folder
     for file in os.listdir(tmp_folder):

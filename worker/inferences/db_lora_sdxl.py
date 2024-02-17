@@ -12,7 +12,6 @@ def inference(prompt, lora, model_base= "stabilityai/stable-diffusion-xl-base-1.
     base.load_lora_weights(tmp_folder, weight_name=lora)
 
     # Generate an image
-    prompt = "A majestic lion jumping from a big stone at night"
     image = base(
         prompt=prompt,
         num_inference_steps=40,
