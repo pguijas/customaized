@@ -1,0 +1,15 @@
+.gridContainer {
+  padding: 2%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  gap: 5%;
+}
+
+.gridItem {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}

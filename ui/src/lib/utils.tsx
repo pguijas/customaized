@@ -59,19 +59,23 @@ const uploadImage = async (file: File, filename: string) => {
   }
 };
 
-const downloadImage = async (filename: string) => {
-  try {
-    console.log("downloading image")
-    const { data, error } = await supabaseAdmin.storage
-    .from("images")
-    .download(filename)
-    if (error) console.log(error)
-    if (data) console.log(data)
-    return data;
-  } catch (e: any) {
-    // Handle errors here
-    console.error(e)
+const getResults = async () => {
+  const { data, error } = await supabaseAdmin
+  .storage
+  .from('results')
+  .list('', {
+    limit: 100,
+    offset: 0,
+  })
+  if (!data) {
+    console.log('no images');
+    return []
   }
-};
+  var urls = []
+  for (const f of data) {
+    urls.push(supabaseAdmin.storage.from('results').getPublicUrl(f.name).data.publicUrl)
+  }
+  return urls
+}
 
-export { createProject, updateProject, viewProject, uploadImage, createHyperparams, downloadImage };
+export { createProject, updateProject, viewProject, uploadImage, createHyperparams, getResults };
