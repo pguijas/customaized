@@ -1,5 +1,8 @@
 import { supabaseAdmin } from './supabase'
 
+// error, unassigned, running, finished
+// jobs, hyperparams
+
 const createProject = async () => {
   const { data, error } = await supabaseAdmin
   .from('jobs')
@@ -14,7 +17,8 @@ const createProject = async () => {
 const viewProject = async () => {
   const { data, error } = await supabaseAdmin
   .from('jobs')
-  .select("model_name, status");
+  .select("id, type, status, hyperparams (name, value)")
+  .eq("type", "train");
   if (error) console.log(error)
   if (data) console.log(data)
   return data

@@ -2,7 +2,12 @@
 
 import React, { ReactNode, useState } from 'react';
 import styles from './RoundedBox.module.css';
+
+import sandClock from '../../public/sand_clock.png';
+import redCross from '../../public/red_cross.png';
 import loadingImage from '../../public/loading.gif';
+
+
 
 interface RoundedBoxProps {
   status: ReactNode;
@@ -31,9 +36,18 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
 
       (
         <div className={styles.content}>
-          {status === 'pending' ? (
+          
+          {status === 'running' ? (
             <img src={loadingImage.src} alt="Loading" />
-          ) : (
+
+          ) : status === 'error' ? (
+            <img src={redCross.src} alt="Error" />
+
+          ) : status === 'unassigned' ? (
+            <img src={sandClock.src} alt="Unassigned" />
+          ) :
+          
+          (
             <div className={styles.status}>{status}</div>
           )}
           <div className={styles.name}>{name}</div>

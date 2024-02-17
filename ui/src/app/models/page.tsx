@@ -11,24 +11,22 @@ import { viewProject } from "../../lib/utils";
 
 
 export default function Models() {
-    // const info = [
-    //     {status:"training", name: "Model1"},
-    //     {status:"training", name: "Model2"},
-    //     {status:"training", name: "Model3"},
-    //     {status:"finished", name: "Model4"},
-    //     {status:"finished", name: "Model5"},
-    //     {status:"finished", name: "Model6"},
-    //     {status:"finished", name: "Model7"},
-    // ]
 
     const [info, setInfo] = useState(null);
 
     useEffect(() => {
         viewProject()
           .then(data => {
+            data = data.map((item, index) => (
+                {
+                    id: item.id,
+                    status: item.status,
+                    type: item.type,
+                    name: item.hyperparams.filter(hyperparam => hyperparam["name"] == "person_name")[0]["value"]
+                }))
             console.log(data)
             setInfo(data);
-          })
+            })
           .catch(error => {
             console.error('Error fetching data:', error);
           });
@@ -73,7 +71,7 @@ export default function Models() {
             {info && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
                     {info.map((item, index) => (
-                        <RoundedBox key={index} name={item.model_name} status={item.status} />
+                        <RoundedBox key={index} name={item.name} status={item.status} />
                     ))}
                 </div>)
             }
