@@ -7,8 +7,6 @@ import PopupWindow from "@/components/PopupWindow.tsx";
 
 import { supabaseAdmin } from '@/lib/supabase'
 
-import imageSrc from '../../../public/selfie.jpg';
-
 import { createProject, updateProject, viewProject, createHyperparams, uploadImage, downloadImage} from "../../lib/utils";
 
 
@@ -84,7 +82,6 @@ export default function Models() {
 
         // Images
         for (const image of images) {
-            // We cannot set a dict with 
             const imageHyperparam = {
                 job_id: jobId,
                 name: "image",

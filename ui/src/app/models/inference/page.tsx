@@ -1,10 +1,66 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { getResults } from '../../../lib/utils'
-import styles from '../../../components/ResultsLayout.module.css'
+import { useSearchParams } from 'next/navigation'
+
+
+import { createProject, updateProject, viewProjectById, createHyperparams } from "@/lib/utils";
+
+import { getResults } from '@/lib/utils'
+import styles from '@/components/ResultsLayout.module.css'
+import SearchComponent from '@/components/GenBar.tsx';
+
 
 export default function Home() {
+  
+  const searchParams = useSearchParams();
+  const jobId = searchParams.get('model')
+
+  const handleSubmitPrompt = async (e) => {
+    e.preventDefault()
+
+    // Get the information necessary to perform the inference
+    const job = await viewProjectById(jobId);
+    // const prompt = document.getElementById('prompt_input').value;
+    const prompt = e.target[0].value
+
+    const modelName = job.hyperparams.filter(hyperparam => hyperparam["name"] == "model_name")[0]["value"];
+    const tunePath = job.result_path;
+
+    // Create the inference job
+    let inferenceJobData = {
+      type: "inference",
+      status: "creating",
+    } 
+    const inferenceId = await createProject(inferenceJobData)
+
+    // Set the hyperparams
+    let inferenceHyperparamsData = {
+      job_id: inferenceId,
+      name: "prompt",
+      value: prompt
+    }
+    createHyperparams(inferenceHyperparamsData)
+
+    inferenceHyperparamsData = {
+      job_id: inferenceId,
+      name: "model_name",
+      value: modelName
+    }
+    createHyperparams(inferenceHyperparamsData)
+
+    inferenceHyperparamsData = {
+      job_id: inferenceId,
+      name: "tune_path",
+      value: tunePath
+    }
+    createHyperparams(inferenceHyperparamsData)
+
+    // Update the status of the job
+    inferenceJobData.status = "unassigned";
+    updateProject(inferenceId, inferenceJobData)
+  }
+  
   const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   useEffect(() => {
@@ -13,22 +69,17 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="w-full max-w-6xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
-      <h2 className="text-3xl font-bold text-center mb-8">Resultados Generados</h2>
+    <>
+    <SearchComponent onSumbit={handleSubmitPrompt}/>
+    <div className="w-full max-w-6xl mt-16 p-8 rounded-lg space-y-8">
       <div className={styles.grid}>
         {imageUrls.map((url, index) => (
           <img key={index} src={url} alt={`Imagen ${index}`} className={styles.gridItem} />
         ))}
       </div>
-      <input placeholder="Escribe tu próximo prompt aquí"
-        className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        defaultValue="" required/>
-      <div className="container py-5 px-5 mx-0 min-w-full flex flex-col items-center">
-      <button type="button"
-              className="text-white bg-gradient-to-r bg-blue-500 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-          Send Prompt
-      </button>
-      </div>
+      
+
     </div>
+    </>
   );
 };

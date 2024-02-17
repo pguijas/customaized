@@ -27,7 +27,6 @@ const updateProject = async (id, jobInfo) => {
 };
 
 const createHyperparams = async (hyperparamsInfo) => {
-  console.log("Hyperparams info:", hyperparamsInfo)
   const { data, error } = await supabaseAdmin
   .from('hyperparams')
   .insert(hyperparamsInfo);
@@ -45,9 +44,18 @@ const viewProject = async () => {
   return data
 };
 
+const viewProjectById = async (id) => {
+  const { data, error } = await supabaseAdmin
+  .from('jobs')
+  .select("id, type, status, result_path, hyperparams (name, value)")
+  .eq("id", id);
+  if (error) console.log(error)
+  if (data) console.log(data)
+  return data[0];
+};
+
 const uploadImage = async (file: File, filename: string) => {
   try {
-    console.log(filename)
     const { data, error } = await supabaseAdmin.storage
     .from("images")
     .upload(filename, file)
@@ -78,4 +86,4 @@ const getResults = async () => {
   return urls
 }
 
-export { createProject, updateProject, viewProject, uploadImage, createHyperparams, getResults };
+export { createProject, updateProject, viewProject, viewProjectById, uploadImage, createHyperparams, getResults };
