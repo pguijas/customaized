@@ -1,40 +1,25 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-
-interface DynamicImageProps {
-  src: string;
-  alt: string;
-}
-
-const DynamicImage: React.FC<DynamicImageProps> = ({ src, alt }) => {
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  useEffect(() => {
-    const loadImage = async () => {
-      try {
-        //const {data} = supabaseAdmin.storage.from('test_bucket').getPublicUrl(src)
-        const response = await fetch(src);
-        if (response.ok) {
-          setImageSrc(src);
-        } else {
-          console.error('Failed to load image:', response.statusText);
-        }
-      } catch (error) {
-        console.error('Error loading image:', error);
-      }
-    };
-    loadImage();
-  }, [src]);
-  if (!imageSrc) return;
-  return <img src={imageSrc} alt={alt} />;
-};
-
-export {DynamicImage};
+import { getResults } from '../../../lib/utils'
+import styles from '../../../components/ResultsLayout.module.css'
 
 export default function Home() {
-    return (
-        <div>
-            <DynamicImage src='https://gvvrmhpfkcshsukokpag.supabase.co/storage/v1/object/public/test_bucket/public/img1.png' alt='Result'/>
-        </div>
-    )
-  }  
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Llama a la función getResults y actualiza el estado con las URLs de las imágenes
+    getResults().then(urls => setImageUrls(urls));
+  }, []);
+
+  return (
+    <div className={styles.gridContainer}>
+      <h1>Lista de Imágenes</h1>
+      <div className={styles.grid}>
+        {imageUrls.map((url, index) => (
+          <img key={index} src={url} alt={`Imagen ${index}`} className={styles.gridItem} />
+        ))}
+      </div>
+    </div>
+  );
+};

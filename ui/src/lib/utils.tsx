@@ -58,4 +58,23 @@ const uploadImage = async (file: File, filename: string) => {
   }
 };
 
-export { createProject, updateProject, viewProject, uploadImage, createHyperparams };
+const getResults = async () => {
+  const { data, error } = await supabaseAdmin
+  .storage
+  .from('results')
+  .list('', {
+    limit: 100,
+    offset: 0,
+  })
+  if (!data) {
+    console.log('no images');
+    return []
+  }
+  var urls = []
+  for (const f of data) {
+    urls.push(supabaseAdmin.storage.from('results').getPublicUrl(f.name).data.publicUrl)
+  }
+  return urls
+}
+
+export { createProject, updateProject, viewProject, uploadImage, createHyperparams, getResults };
