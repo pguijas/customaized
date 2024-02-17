@@ -1,4 +1,4 @@
-// File: /home/nyx/Documents/hackathon/customaized/ui/src/app/page.tsx
+// File: C:\Users\elena\OneDrive\Documentos\HackUDC\apaño\customaized\ui\src\app\page.tsx
 import * as entry from '../../../src/app/page.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 
