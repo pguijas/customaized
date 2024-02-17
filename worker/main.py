@@ -24,17 +24,14 @@ Tables:
         - param_name
         - value
 
-Cosas:
-    - mirar de hashear cosas y así para que no pueda haber duplicados
-    - cachear
-
 Limpiar cosas que no necesitamos como:
     - sdxl de la bd -> meterle realitic vision (al final)
 
 Poner validation solo si modo debug
 
-
 habrá que hashear tb las imágenes subidas x los usuarios
+
+quizá sacar refiner
 """
 
 # Worker Name
@@ -47,6 +44,8 @@ if not os.path.exists(tmp_folder):
 debug = True
 if not debug:
     logging.basicConfig(level=logging.CRITICAL)
+
+
 
 # Create a Supabase client
 url: str = os.environ.get("SUPABASE_URL") # setted with $ export SUPABASE_URL="https://<your-uuid>.supabase.co"
@@ -67,7 +66,7 @@ def get_param_from_query(query, param, only_one=True):
 
 while True:
     # Find a job to process (first come, first served)
-    job = supabase.table("jobs").select("*").eq("status", "unassinged").order("created_at", desc=False).range(0, 1).execute().data
+    job = supabase.table("jobs").select("*").eq("status", "unassigned").order("created_at", desc=False).range(0, 1).execute().data
     if job == []:
         print(f"No jobs to process (sleeping for {sleep_time} seconds)")
         time.sleep(sleep_time)
@@ -110,7 +109,7 @@ while True:
         if not debug:
             validation_epochs = 99999999999
         try:
-            model_path = train(get_args(f"a photo of {person_name} the person", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=epochs))
+            model_path = train(get_args(f"a photo of {person_name}", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=epochs))
         except Exception as e:
             logging.error(f"Error: {e}")
             supabase.table("jobs").update({"status": "crashed", "error_message": str(e)}).eq("id", job[0]["id"]).execute()

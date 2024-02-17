@@ -6,6 +6,7 @@ def inference(prompt, lora, model_base= "stabilityai/stable-diffusion-xl-base-1.
    
     # Load the model
     base = StableDiffusionXLPipeline.from_pretrained(model_base).to("cuda")
+    base.load_lora_weights(os.path.join(tmp_folder, lora))
     refiner = StableDiffusionXLImg2ImgPipeline.from_pretrained(model_refiner).to("cuda")
 
     # Load lora model for base
