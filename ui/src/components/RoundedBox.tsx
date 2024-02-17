@@ -57,7 +57,7 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
       (
         <div className={styles.content}>
           
-          {status === 'running' || status === 'unassigned' ? (
+          {status === 'running' || status === 'unassigned' || status === 'error' ? (
           <div className='flex space-x-2 justify-center items-center h-screen'>
             <span className='sr-only'>Loading...</span>
              <div className='h-3 w-3 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
