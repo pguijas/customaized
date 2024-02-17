@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import styles from './PopupWindow.module.css'; // Assuming you have a CSS module for styling
 
 const PopupWindow = ({ onClose, onSubmit }) => {
-  const [input1Value, setInput1Value] = useState('');   
+  const [personName, setPersonName] = useState('');  
+  const [modelName, setModelName] = useState('');    
   const [imageFiles, setImageFiles] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(input1Value, imageFiles);
+    onSubmit(personName, modelName, imageFiles);
   };
 
   const handleImageChange = (e) => {
@@ -26,9 +27,17 @@ const PopupWindow = ({ onClose, onSubmit }) => {
           <input
             id="input1"
             type="text"
-            value={input1Value}
-            onChange={(e) => setInput1Value(e.target.value)}
-            placeholder="Name of your model"
+            value={personName}
+            onChange={(e) => setPersonName(e.target.value)}
+            placeholder="e.g. John Smith"
+          />
+          <label htmlFor="input2">Model name</label>
+          <input
+            id="input2"
+            type="text"
+            value={modelName}
+            onChange={(e) => setModelName(e.target.value)}
+            placeholder="e.g. stabilityai/stable-diffusion-xl-base-1.0"
           />
           <label htmlFor="images">Upload Images:</label>
           <input
