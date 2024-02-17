@@ -1,9 +1,8 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import React, {Suspense} from "react";
-import NavBar from "@/components/NavBar";
-import Footer from "@/components/Footer";
+import React from "react";
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,19 +19,8 @@ export default function RootLayout({
   return (
       <html lang="en">
       <body>
-      <section>
-        <Suspense
-            fallback={
-              <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between h-[69px]" />
-            }
-        >
-          <NavBar />
-        </Suspense>
-      </section>
-      <main className="flex flex-1 flex-col items-center py-16">
-        {children}
-      </main>
-      <Footer />
+      {children}
+
       </body>
       </html>
   );

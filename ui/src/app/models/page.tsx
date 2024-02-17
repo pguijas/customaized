@@ -17,7 +17,6 @@ export default function Models() {
     useEffect(() => {
         viewProject()
           .then(data => {
-            data = data?.slice(0, 4)
             data = data.map((item, index) => (
                 {
                     id: item.id,
@@ -63,11 +62,11 @@ export default function Models() {
             const imageHyperparam = {
                 job_id: jobId,
                 name: "image",
-                value: image.name
+                value: jobId + "-" + image.name
             }
             createHyperparams(imageHyperparam)
 
-            uploadImage(image, image.name)
+            uploadImage(image, jobId + "-" + image.name)
         }
 
         setIsPopupOpen(false);

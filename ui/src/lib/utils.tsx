@@ -40,8 +40,8 @@ const uploadImage = async (file: File, filename: string) => {
   try {
     console.log(filename)
     const { data, error } = await supabaseAdmin.storage
-    .from("models")
-    .upload('public/'+filename, file)
+    .from("images")
+    .upload(filename, file)
     if (error) console.log(error)
     if (data) console.log(data)
   } catch (e: any) {

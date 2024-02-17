@@ -2,10 +2,11 @@ import Link from "next/link";
 import Logo from "../../public/Logo.png";
 
 export default async function NavBar() {
+
     return (
         <div className="flex w-full px-4 lg:px-40 py-4 items-center border-b text-center gap-8 justify-between">
             <div className="flex gap-2 h-full w-28">
-                <a href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
+                <a href="/ui/public" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src={Logo.src} alt="CustomAIzed Logo" className="h-auto max-w-full" />
                 </a>
             </div>
