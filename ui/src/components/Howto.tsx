@@ -1,5 +1,6 @@
-import selfie from "../../public/selfie.jpg";
+import selfie from "../../public/hector-original.jpeg";
 import working from "../../public/working.jpg";
+import resultado from "../../public/hector-resultado.png";
 
 export default function Howto() {
     return (
@@ -52,7 +53,7 @@ export default function Howto() {
                     </p>
                 </div>
                 <img
-                    src={selfie.src}
+                    src={resultado.src}
                     alt="Upload your images"
                     className="rounded-lg max-w-md"
                 />
