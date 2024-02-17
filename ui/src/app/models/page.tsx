@@ -9,11 +9,7 @@ import { supabaseAdmin } from '@/lib/supabase'
 
 import imageSrc from '../../../public/selfie.jpg';
 
-import { createProject, updateProject, viewProject, createHyperparams, uploadImage} from "../../lib/utils";
-
-
-
-
+import { createProject, updateProject, viewProject, createHyperparams, uploadImage, downloadImage} from "../../lib/utils";
 
 
 export default function Models() {
@@ -28,8 +24,13 @@ export default function Models() {
                     id: item.id,
                     status: item.status,
                     type: item.type,
-                    name: item.hyperparams.filter(hyperparam => hyperparam["name"] == "person_name")[0]["value"]
+                    name: item.hyperparams.filter(hyperparam => hyperparam["name"] == "person_name")[0]["value"],
+                    image: supabaseAdmin.storage.from('images').getPublicUrl(
+                        item.hyperparams.filter(hyperparam => hyperparam["name"] == "image")[0]["value"],
+                        ).data.publicUrl
+                        
                 }))
+            console.log("Data:", data)
             setInfo(data);
             })
             .catch(error => {
@@ -113,25 +114,22 @@ export default function Models() {
                 </div>
             )}
 
-            {/* Card that opens the popup*/}
-            <div style={{justifyContent: 'center', textAlign: 'center'}}>
+            {/* Grid of models trained */}
+            <div style={{ justifyContent: 'center', display: 'grid', gridTemplateColumns: 'repeat(4, .2fr)', gap: '0px' }}>
                 <RoundedBox onClick={() => setIsPopupOpen(true)}>
                     <p>+</p>
                     <p>Create a new model</p>
                 </RoundedBox>
+
+                {info && (            
+                    <>
+                        {info.map((item, index) => (
+                            <RoundedBox key={index} name={item.name} status={item.status} imageUrl={item.image} />
+                        ))}
+                    </>
+                )}
             </div>
 
-            {/* Just an example of a box with an image */}
-            <RoundedBox imageUrl={imageSrc.src} />
-
-            {/* Grid of models trained */}
-            {info && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-                    {info.map((item, index) => (
-                        <RoundedBox key={index} name={item.name} status={item.status} />
-                    ))}
-                </div>)
-            }
         </div>
     );
   }
