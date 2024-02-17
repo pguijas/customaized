@@ -30,7 +30,7 @@ The platform is designed to be easy to use, intended to be used by anyone, **wit
 
 ## 🔧 Setup
 
-Para poder ejecutar el proyecto se precisan configurar 3 componentes: la base de datos, el worker (gpu) y la interfaz de usuario.
+In order to run the project, 3 components need to be configured: the database, the worker (gpu) and the user interface.
 
 ### Supabase
 
@@ -44,7 +44,7 @@ The following tables must be created in the Supabase database:
 
 [![hyperparams](resources/hyperparams.png)]()
 
-También se deben configurar 3 buckets en Supabase:
+Also, 3 buckets must be configured in Supabase:
 - results
 - images
 - models
