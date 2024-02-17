@@ -26,7 +26,7 @@ export default function Home() {
             CustomAIzed
           </h1>
           <p className="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 xl:px-48 dark:text-gray-400">
-            Welcome to CustomAIzed, where your selfies become the canvas for
+            Welcome to CustomAIzed, where your photos become the canvas for
             cutting-edge artificial intelligence! Unleash the power of customization
             as we transform your ordinary self-portraits into extraordinary
             AI-generated images. Our web app merges creativity with technology,
