@@ -88,23 +88,25 @@ def import_model_class_from_model_name_or_path(
         raise ValueError(f"{model_class} is not supported.")
 
 
-def get_args(num_train_epochs, batch_size, instance_prompt, validation_prompt, model="stabilityai/stable-diffusion-xl-base-1.0"):
+#validation_prompt
+
+def get_args(instance_prompt, num_train_epochs=222, batch_size=4, model="stabilityai/stable-diffusion-xl-base-1.0"):
     args = argparse.Namespace(
         pretrained_model_name_or_path=model,
         pretrained_vae_model_name_or_path="madebyollin/sdxl-vae-fp16-fix",
         revision=None,
         variant=None,
         instance_data_dir="dog",
-        instance_prompt="a photo of a klk dog",
-        train_batch_size=4,
-        sample_batch_size=4,
-        num_train_epochs=200,
+        instance_prompt=instance_prompt,
+        train_batch_size=batch_size,
+        sample_batch_size=batch_size,
+        num_train_epochs=num_train_epochs,
         num_validation_images=4,
         validation_epochs=50,
         repeats=1,
         class_data_dir=None,
         class_prompt=None,
-        validation_prompt="klk the dog smoking a joint",
+        validation_prompt=instance_prompt,
         with_prior_preservation=False,
         prior_loss_weight=1.0,
         num_class_images=0,

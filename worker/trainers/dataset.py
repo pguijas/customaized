@@ -43,7 +43,7 @@ class DreamBoothDataset(Dataset):
         class_num=None,
         size=1024,
         repeats=1,
-        center_crop=False,
+        center_crop=True,
         random_flip=False,
     ):
         self.size = size
