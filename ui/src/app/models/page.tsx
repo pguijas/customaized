@@ -2,21 +2,27 @@
 
 import React, { useState, useEffect } from 'react';
 
-import RoundedBox from "../../components/RoundedBox.tsx";
-import PopupWindow from "../../components/PopupWindow.tsx";
+import RoundedBox from "@/components/RoundedBox.tsx";
+import PopupWindow from "@/components/PopupWindow.tsx";
+
+import { supabaseAdmin } from '@/lib/supabase'
 
 import imageSrc from '../../../public/selfie.jpg';
 
 import { createProject, updateProject, viewProject, createHyperparams, uploadImage} from "../../lib/utils";
 
 
+
+
+
+
 export default function Models() {
 
     const [info, setInfo] = useState(null);
 
-    useEffect(() => {
+    function retrieveJobData() {
         viewProject()
-          .then(data => {
+            .then(data => {
             data = data.map((item, index) => (
                 {
                     id: item.id,
@@ -24,14 +30,25 @@ export default function Models() {
                     type: item.type,
                     name: item.hyperparams.filter(hyperparam => hyperparam["name"] == "person_name")[0]["value"]
                 }))
-            console.log(data)
             setInfo(data);
             })
-          .catch(error => {
+            .catch(error => {
             console.error('Error fetching data:', error);
-          });
+            });
+    }
+    useEffect(() => {
+        retrieveJobData()
       }, []); // 
 
+    supabaseAdmin
+      .channel('jobs_updates')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'jobs' }, retrieveJobData)
+      .subscribe()
+
+    supabaseAdmin
+      .channel('jobs_inserts')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'jobs' }, retrieveJobData)
+      .subscribe()
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -39,8 +56,8 @@ export default function Models() {
         setIsPopupOpen(false);
     };
 
-    const handleSubmitPopup = async (modelName, images) => {
-        console.log("Submitted values:", modelName, images);
+    const handleSubmitPopup = async (personName, modelName, images) => {
+        console.log("Submitted values:", personName, modelName, images);
 
         // Jobs
         let trainJobData = {
@@ -50,9 +67,16 @@ export default function Models() {
         const jobId = await createProject(trainJobData)
 
         // Hyperparams
-        const trainHyperparamsData = {
+        let trainHyperparamsData = {
             job_id: jobId,
             name: "person_name",
+            value: personName
+        }
+        createHyperparams(trainHyperparamsData)
+
+        trainHyperparamsData = {
+            job_id: jobId,
+            name: "model_name",
             value: modelName
         }
         createHyperparams(trainHyperparamsData)
