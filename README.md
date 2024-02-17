@@ -17,8 +17,7 @@ The platform is designed to be easy to use, intended to be used by anyone, **wit
 
 ## 📽️ Demo
 
-[![Watch the video](https://img.youtube.com/vi/jzuAKhdGgM8)](https://youtu.be/jzuAKhdGgM8)
-
+[![Video](http://img.youtube.com/vi/jzuAKhdGgM8/0.jpg)](http://www.youtube.com/watch?v=jzuAKhdGgM8)
 
 ## 📦 Features
 
