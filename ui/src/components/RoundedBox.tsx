@@ -40,10 +40,10 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
           {status === 'running' ? (
             <img src={loadingImage.src} alt="Loading" />
 
-          ) : status === 'error' ? (
+          ) : status === 'crashed' ? (
             <img src={redCross.src} alt="Error" />
 
-          ) : status === 'unassigned' ? (
+          ) : status === 'unassigned' || status === 'creating' ? (
             <img src={sandClock.src} alt="Unassigned" />
           ) :
           

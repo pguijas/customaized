@@ -7,7 +7,7 @@ import PopupWindow from "../../components/PopupWindow.tsx";
 
 import imageSrc from '../../../public/selfie.jpg';
 
-import { createProject, viewProject, createHyperparams, uploadImage} from "../../lib/utils";
+import { createProject, updateProject, viewProject, createHyperparams, uploadImage} from "../../lib/utils";
 
 
 export default function Models() {
@@ -43,8 +43,9 @@ export default function Models() {
         console.log("Submitted values:", modelName, images);
 
         // Jobs
-        const trainJobData = {
+        let trainJobData = {
             type: "train",
+            status: "creating",
         }
         const jobId = await createProject(trainJobData)
 
@@ -68,6 +69,10 @@ export default function Models() {
 
             uploadImage(image, jobId + "-" + image.name)
         }
+
+        // Update the status of the job
+        trainJobData.status = "unassigned";
+        updateProject(jobId, trainJobData)
 
         setIsPopupOpen(false);
     };

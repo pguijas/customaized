@@ -4,18 +4,26 @@ import { supabaseAdmin } from './supabase'
 // jobs, hyperparams
 
 const createProject = async (jobInfo) => {
-  console.log("Creating job...");
-
   const {data, error} = await supabaseAdmin
   .from('jobs')
   .insert({
     type: jobInfo.type,
-    status: "unassigned",
+    status: jobInfo.status,
   })
   .select();
   if (error) console.log(error)
   
   return data[0].id;
+};
+
+const updateProject = async (id, jobInfo) => {
+  const {data, error} = await supabaseAdmin
+  .from('jobs')
+  .update({
+    type: jobInfo.type,
+    status: jobInfo.status,
+  })
+  .eq('id', id);
 };
 
 const createHyperparams = async (hyperparamsInfo) => {
@@ -50,4 +58,4 @@ const uploadImage = async (file: File, filename: string) => {
   }
 };
 
-export { createProject, viewProject, uploadImage, createHyperparams };
+export { createProject, updateProject, viewProject, uploadImage, createHyperparams };
