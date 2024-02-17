@@ -14,7 +14,8 @@ export default async function Login() {
         </Suspense>
         </section>
         <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
-        <div className="w-full max-w-6xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
+        <center>
+        <div className="w-full max-w-xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
             <h2 className="text-2xl font-bold text-gray-900">
                 Sign in to CustomAIzed
             </h2>
@@ -24,28 +25,28 @@ export default async function Login() {
                     <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900">Your
                         email</label>
                     <input type="email" name="email" id="email"
-                           className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-30 p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                           className="border text-gray-900 py-2 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-30 p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            placeholder="name@company.com" defaultValue="admin@customaized.com" required/>
                 </div>
                 <div>
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900">Your
+                    <label htmlFor="password" className="block mb-2 py-2 text-sm font-medium text-gray-900">Your
                         password</label>
                     <input type="password" name="password" id="password" placeholder="••••••••"
                            className="border text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-30 p-2.5 bg-gray-100 border-gray-600 placeholder-gray-400 dark:text-black dark:focus:ring-blue-500 dark:focus:border-blue-500"
                            defaultValue="cAHJ_18$iOIA9" required/>
                 </div>
                 <div className="flex items-start">
-                    <div className="flex items-center h-5">
+                    <div className="flex py-10 items-center h-5">
                         <input id="remember" aria-describedby="remember" name="remember" type="checkbox"
                                className="w-4 h-4 border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:bg-gray-700 dark:border-gray-600"
                                required/>
                     </div>
-                    <div className="ms-3 text-sm">
+                    <div className="flex py-10 px-2 items-center h-5">
                         <label htmlFor="remember" className="font-medium text-gray-500 dark:text-gray-400">Remember this
                             device</label>
                     </div>
                 </div>
-                               </center>
+                </center>
                 <div className="container py-5 px-5 mx-0 min-w-full flex flex-col items-center">
                 <Link href="/models">
                     <button type="button"
@@ -56,6 +57,7 @@ export default async function Login() {
                 </div>
             </form>
         </div>
+        </center>
         </div></div>
     )
         ;
