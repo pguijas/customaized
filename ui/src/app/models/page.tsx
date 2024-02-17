@@ -112,7 +112,7 @@ export default function Models() {
             )}
 
             {/* Grid of models trained */}
-            <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <div className="py-2 px-4 mx-auto max-w-screen-xl text-center lg:py-1 lg:px-12">
             <div className="w-full max-w-6xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
             <h2 className="text-2xl font-bold text-gray-900">
                 Create or get your models!

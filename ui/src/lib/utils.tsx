@@ -101,12 +101,14 @@ const getInferenceResults = async (jobId) => {
     .eq('value', resultPath);
 
   const inferenceIds = data?.map((item) => item.job_id);
+  console.log("Results", inferenceIds)
 
   // Get the image paths of the inference jobs
   var { data, error } = await supabaseAdmin
     .from('jobs')
     .select("result_path")
-    .in('id', inferenceIds);
+    .in('id', inferenceIds)
+    .order('id', {ascending: false});
 
   const inferenceImages = data?.map((item) => item.result_path);
 

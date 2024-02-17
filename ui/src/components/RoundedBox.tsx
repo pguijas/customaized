@@ -43,7 +43,7 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
       (
         <div className={styles.content}>
           
-          {status === 'running' ? (
+          {status === 'running' || status === 'unassigned' ? (
           <div className='flex space-x-2 justify-center items-center h-screen'>
             <span className='sr-only'>Loading...</span>
              <div className='h-3 w-3 bg-black rounded-full animate-bounce [animation-delay:-0.3s]'></div>
@@ -55,10 +55,7 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
           ) : status === 'error' ? (
             <img src={redCross.src} alt="Error" />
 
-          ) : status === 'unassigned' ? (
-            <img src={sandClock.src} alt="Unassigned" />
           ) :
-          
           (
             <div className={styles.status}></div>
           )}

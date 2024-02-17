@@ -6,7 +6,6 @@ import { useSearchParams } from 'next/navigation'
 import { supabaseAdmin } from '@/lib/supabase'
 import { createProject, updateProject, viewProjectById, createHyperparams, getInferenceResults } from "@/lib/utils";
 
-import styles from '@/components/ResultsLayout.module.css';
 import SearchComponent from '@/components/GenBar.tsx';
 import RoundedBox from '@/components/RoundedBox';
 
@@ -76,8 +75,9 @@ export default function Home() {
   async function retrieveInferenceResults() {
     // Llama a la función getResults y actualiza el estado con las URLs de las imágenes
     const inferenceFiles = await getInferenceResults(jobId)
+    console.log("Inference files:", inferenceFiles);
     const urls = inferenceFiles?.map((url) => 
-      (url === "") ? "" : supabaseAdmin.storage.from('results').getPublicUrl(url).data.publicUrl);
+      (url === "" || !url) ? "" : supabaseAdmin.storage.from('results').getPublicUrl(url).data.publicUrl);
     console.log("URLs", urls);
     setImageUrls(urls);
   }
@@ -95,7 +95,7 @@ export default function Home() {
       <div style={{ justifyContent: 'center', display: 'grid', gridTemplateColumns: 'repeat(4, .2fr)', gap: '15px' }}>
         {imageUrls.map((url, index) => (
               // <img key={index} src={url} alt={`Imagen ${index}`} className={styles.gridItem} />
-              url == "" ? <RoundedBox key={index} status="pending"/> : 
+              url == "" ? <RoundedBox key={index} name="error" status="pending"/> : 
               <RoundedBox key={index} imageUrl={url} onClick={() => window.open(url, '_blank')}/>
             ))}
       </div>
