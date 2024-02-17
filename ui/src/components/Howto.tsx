@@ -28,9 +28,9 @@ export default function Howto() {
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold">1. Upload your images</h3>
                     <p className="pe-9 text-sm text-gray-600">
-                        Start your journey to personalized AI mastery by uploading a
-                        high-quality selfie. Our platform accepts a variety of image formats
-                        to ensure a seamless experience.
+                        Start your journey to CustomAIzed by uploading a few
+                        pictures to your liking. Our platform accepts a variety
+                        of image formats, so you do not have to worry about it.
                     </p>
                 </div>
                 <img
@@ -50,9 +50,9 @@ export default function Howto() {
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold">2. Generate a model</h3>
                     <p className="pe-9 text-sm text-gray-600">
-                        Start your journey to personalized AI mastery by uploading a
-                        high-quality selfie. Our platform accepts a variety of image formats
-                        to ensure a seamless experience.
+                        Once you have selected your photos, you can select
+                        upload them to our platform and select the model
+                        that best meets your needs, and wait a few seconds.
                     </p>
                 </div>
             </div>
@@ -62,10 +62,8 @@ export default function Howto() {
                 <div className="space-y-4">
                     <h3 className="text-2xl font-semibold">3. Download the result</h3>
                     <p className="pe-9 text-sm text-gray-600">
-                        Once satisfied with the preview, easily download your personalized
-                        AI-generated image. Use it across various platforms, from
-                        professional portfolios to social media profiles, showcasing your
-                        unique self in an entirely new light.
+                        Once your model has taken its time to think, you 
+                        can ask it for any type of image you want it to generate.
                     </p>
                 </div>
                 <img
