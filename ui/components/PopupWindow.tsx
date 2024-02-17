@@ -2,30 +2,44 @@ import React, { useState } from 'react';
 import styles from './PopupWindow.module.css'; // Assuming you have a CSS module for styling
 
 const PopupWindow = ({ onClose, onSubmit }) => {
-  const [input1Value, setInput1Value] = useState('');
-  const [input2Value, setInput2Value] = useState('');
+  const [input1Value, setInput1Value] = useState('');   
+  const [imageFiles, setImageFiles] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(input1Value, input2Value);
+    // onSubmit(input1Value, input2Value);
+    console.log("Input 1:", input1Value);
+    console.log("Selected Images:", imageFiles);
   };
+
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    console.log("setting images", files.length, files)
+
+    setImageFiles(files);
+};
 
   return (
     <div className={styles.popup}>
       <div className={styles.popupContent}>
         <button className={styles.closeButton} onClick={onClose}>X</button>
+        
         <form onSubmit={handleSubmit}>
+        <h1>Train a model</h1>
+          <label htmlFor="input1">Name</label>
           <input
+            id="input1"
             type="text"
             value={input1Value}
             onChange={(e) => setInput1Value(e.target.value)}
-            placeholder="Input 1"
+            placeholder="Name of your model"
           />
+          <label htmlFor="images">Upload Images:</label>
           <input
-            type="text"
-            value={input2Value}
-            onChange={(e) => setInput2Value(e.target.value)}
-            placeholder="Input 2"
+            id="images"
+            type="file"
+            multiple
+            onChange={handleImageChange}
           />
           <button type="submit">Submit</button>
         </form>

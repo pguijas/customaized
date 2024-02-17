@@ -31,8 +31,7 @@ export default function Models() {
 
     return (
         <div> 
-            {/* <button onClick={() => setIsPopupOpen(true)}>Open Popup</button> */}
-
+            {/* Popup to launch a new training*/}
             {isPopupOpen && (
                 <div className="popup-container">
                 <PopupWindow
@@ -42,6 +41,7 @@ export default function Models() {
                 </div>
             )}
 
+            {/* Card that opens the popup*/}
             <div style={{justifyContent: 'center', textAlign: 'center'}}>
                 <RoundedBox onClick={() => setIsPopupOpen(true)}>
                     <p>+</p>
@@ -49,8 +49,10 @@ export default function Models() {
                 </RoundedBox>
             </div>
 
+            {/* Just an example of a box with an image */}
             <RoundedBox imageUrl={imageSrc.src} />
 
+            {/* Grid of models trained */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
                 {info.map((item, index) => (
                     <RoundedBox key={index} name={item.name} status={item.status} />
