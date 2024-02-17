@@ -22,6 +22,11 @@
     height: 100%;
 }
 
+.content img {
+    width: 70%;
+    height: 75%;
+}
+
 .status {
     text-align: center;
     height: 500%; /* Set height to 50% */

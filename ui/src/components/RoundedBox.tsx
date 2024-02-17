@@ -31,7 +31,7 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
 
       (
         <div className={styles.content}>
-          {status === 'training' ? (
+          {status === 'pending' ? (
             <img src={loadingImage.src} alt="Loading" />
           ) : (
             <div className={styles.status}>{status}</div>

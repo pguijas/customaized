@@ -1,22 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import RoundedBox from "../../components/RoundedBox.tsx";
 import PopupWindow from "../../components/PopupWindow.tsx";
 
 import imageSrc from '../../../public/selfie.jpg';
 
+import { viewProject } from "../../lib/utils";
+
+
 export default function Models() {
-    const info = [
-        {status:"training", name: "Model1"},
-        {status:"training", name: "Model2"},
-        {status:"training", name: "Model3"},
-        {status:"finished", name: "Model4"},
-        {status:"finished", name: "Model5"},
-        {status:"finished", name: "Model6"},
-        {status:"finished", name: "Model7"},
-    ]
+    // const info = [
+    //     {status:"training", name: "Model1"},
+    //     {status:"training", name: "Model2"},
+    //     {status:"training", name: "Model3"},
+    //     {status:"finished", name: "Model4"},
+    //     {status:"finished", name: "Model5"},
+    //     {status:"finished", name: "Model6"},
+    //     {status:"finished", name: "Model7"},
+    // ]
+
+    const [info, setInfo] = useState(null);
+
+    useEffect(() => {
+        viewProject()
+          .then(data => {
+            console.log(data)
+            setInfo(data);
+          })
+          .catch(error => {
+            console.error('Error fetching data:', error);
+          });
+      }, []); // 
+
 
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -53,11 +70,13 @@ export default function Models() {
             <RoundedBox imageUrl={imageSrc.src} />
 
             {/* Grid of models trained */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-                {info.map((item, index) => (
-                    <RoundedBox key={index} name={item.name} status={item.status} />
-                ))}
-            </div>
+            {info && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
+                    {info.map((item, index) => (
+                        <RoundedBox key={index} name={item.model_name} status={item.status} />
+                    ))}
+                </div>)
+            }
         </div>
     );
   }

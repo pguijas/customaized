@@ -14,7 +14,7 @@ const createProject = async () => {
 const viewProject = async () => {
   const { data, error } = await supabaseAdmin
   .from('jobs')
-  .select("model_name");
+  .select("model_name, status");
   if (error) console.log(error)
   if (data) console.log(data)
   return data
