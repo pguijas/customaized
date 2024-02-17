@@ -40,6 +40,7 @@ cambiar status a unassinged/running/finished/error
 worker_name = "worker-1"
 sleep_time = 2
 tmp_folder = "tmp"
+epochs = 160
 if not os.path.exists(tmp_folder):
     os.makedirs(tmp_folder)
 debug = True
@@ -108,7 +109,7 @@ while True:
         if not debug:
             validation_epochs = 99999999999
         try:
-            model_path = train(get_args(f"a photo of {person_name} the person", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=220))
+            model_path = train(get_args(f"a photo of {person_name} the person", instance_data_dir=tmp_folder, model=model_name, num_train_epochs=epochs))
         except Exception as e:
             logging.error(f"Error: {e}")
             supabase.table("jobs").update({"status": 100, "error_message": str(e)}).eq("id", job[0]["id"]).execute()
