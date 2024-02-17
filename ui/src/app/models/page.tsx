@@ -1,17 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 import RoundedBox from "@/components/RoundedBox.tsx";
 import PopupWindow from "@/components/PopupWindow.tsx";
 
 import { supabaseAdmin } from '@/lib/supabase'
 
-import { createProject, updateProject, viewProject, createHyperparams, uploadImage, downloadImage} from "../../lib/utils";
+import { createProject, updateProject, viewProject, createHyperparams, uploadImage, getInferenceResults} from "../../lib/utils";
 
 
 export default function Models() {
-
+    
     const [info, setInfo] = useState(null);
 
     function retrieveJobData() {
@@ -28,7 +29,7 @@ export default function Models() {
                         ).data.publicUrl
                         
                 }))
-            console.log("Data:", data)
+            console.log(data);
             setInfo(data);
             })
             .catch(error => {
@@ -56,7 +57,6 @@ export default function Models() {
     };
 
     const handleSubmitPopup = async (personName, modelName, images) => {
-        console.log("Submitted values:", personName, modelName, images);
 
         // Jobs
         let trainJobData = {
@@ -112,7 +112,12 @@ export default function Models() {
             )}
 
             {/* Grid of models trained */}
-            <div style={{ justifyContent: 'center', display: 'grid', gridTemplateColumns: 'repeat(4, .2fr)', gap: '0px' }}>
+            <div className="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-12">
+            <div className="w-full max-w-6xl mt-16 p-8 bg-gray-50 rounded-lg space-y-8">
+            <h2 className="text-2xl font-bold text-gray-900">
+                Create or get your models!
+            </h2>
+            <div style={{ justifyContent: 'center', display: 'grid', gridTemplateColumns: 'repeat(4, .2fr)', gap: '3%' }}>
                 <RoundedBox onClick={() => setIsPopupOpen(true)}>
                     <p>+</p>
                     <p>Create a new model</p>
@@ -121,10 +126,14 @@ export default function Models() {
                 {info && (            
                     <>
                         {info.map((item, index) => (
-                            <RoundedBox key={index} name={item.name} status={item.status} imageUrl={item.image} />
+                            <Link href={`/models/inference?model=${item.id}`}>
+                                <RoundedBox key={index} name={item.name} status={item.status} imageUrl={item.image} />
+                            </Link>
                         ))}
                     </>
                 )}
+            </div>
+            </div>
             </div>
 
         </div>

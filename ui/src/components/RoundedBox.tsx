@@ -60,9 +60,15 @@ const RoundedBox: React.FC<RoundedBoxProps> = ({ status, name, imageUrl, childre
           ) :
           
           (
-            <div className={styles.status}>{status}</div>
+            <div className={styles.status}></div>
           )}
-          <div className={styles.name}>{name}</div>
+
+          {name &&  
+            <div className="min-h-10 rounded flex items-center justify-center bg-black bg-opacity-60 text-white p-6 rounded-lg">
+              <h1 className="text-xl">{name}</h1>
+            </div> 
+          }
+          
         </div>
       )}
     </div>

@@ -3,7 +3,7 @@ import styles from './PopupWindow.module.css'; // Assuming you have a CSS module
 
 const PopupWindow = ({ onClose, onSubmit }) => {
   const [personName, setPersonName] = useState('');  
-  const [modelName, setModelName] = useState('');    
+  const [modelName, setModelName] = useState('stabilityai/stable-diffusion-xl-base-1.0');    
   const [imageFiles, setImageFiles] = useState([]);
 
   const handleSubmit = (e) => {
@@ -30,6 +30,7 @@ const PopupWindow = ({ onClose, onSubmit }) => {
             value={personName}
             onChange={(e) => setPersonName(e.target.value)}
             placeholder="e.g. John Smith"
+            required
           />
           <label htmlFor="input2">Model name</label>
           <input
@@ -38,6 +39,7 @@ const PopupWindow = ({ onClose, onSubmit }) => {
             value={modelName}
             onChange={(e) => setModelName(e.target.value)}
             placeholder="e.g. stabilityai/stable-diffusion-xl-base-1.0"
+            required
           />
           <label htmlFor="images">Upload Images:</label>
           <input
@@ -45,6 +47,7 @@ const PopupWindow = ({ onClose, onSubmit }) => {
             type="file"
             multiple
             onChange={handleImageChange}
+            required
           />
           <button type="submit">Submit</button>
         </form>

@@ -40,7 +40,6 @@ const viewProject = async () => {
   .eq("type", "train")
   .order('id');
   if (error) console.log(error)
-  if (data) console.log(data)
   return data
 };
 
@@ -50,7 +49,6 @@ const viewProjectById = async (id) => {
   .select("id, type, status, result_path, hyperparams (name, value)")
   .eq("id", id);
   if (error) console.log(error)
-  if (data) console.log(data)
   return data[0];
 };
 
@@ -60,7 +58,6 @@ const uploadImage = async (file: File, filename: string) => {
     .from("images")
     .upload(filename, file)
     if (error) console.log(error)
-    if (data) console.log(data)
   } catch (e: any) {
     // Handle errors here
     console.error(e)
@@ -86,4 +83,35 @@ const getResults = async () => {
   return urls
 }
 
-export { createProject, updateProject, viewProject, viewProjectById, uploadImage, createHyperparams, getResults };
+const getInferenceResults = async (jobId) => {
+  // Get the name of the model checkpoint
+  var { data, error } = await supabaseAdmin
+    .from('jobs')
+    .select("result_path")
+    .eq('id', jobId);
+
+  const resultPath = data[0]["result_path"];
+  
+
+  // Get the ids (unique) of the inference jobs
+  var { data, error } = await supabaseAdmin
+    .from('hyperparams')
+    .select("job_id")
+    .eq('name', 'tune_path')
+    .eq('value', resultPath);
+
+  const inferenceIds = data?.map((item) => item.job_id);
+
+  // Get the image paths of the inference jobs
+  var { data, error } = await supabaseAdmin
+    .from('jobs')
+    .select("result_path")
+    .in('id', inferenceIds);
+
+  const inferenceImages = data?.map((item) => item.result_path);
+
+  return inferenceImages;
+
+};
+
+export { createProject, updateProject, viewProject, viewProjectById, uploadImage, createHyperparams, getResults, getInferenceResults };
