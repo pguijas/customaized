@@ -20,7 +20,7 @@ export default async function NavBar() {
                         Login
                     </button>
                 </Link>
-                <Link href="/signup">
+                <Link href="/models">
                     <button
                         className="flex-shrink-0 border-transparent border-4 bg-gray-100 hover:bg-gray-100 text-sm py-1 px-2 rounded"
                         type="button"
