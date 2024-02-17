@@ -8,7 +8,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 ![Stars](https://img.shields.io/github/stars/pguijas/customaized?color=green&label=Stars)
 
-This platform will allow its users to generate customized images from models that they know new concepts taught by the user.
+CustomAIzed allow its users to generate customized images from models that they know new concepts taught by the user.
 
 ## 🫳🏼 Usage
 
