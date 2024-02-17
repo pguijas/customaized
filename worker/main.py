@@ -1,3 +1,19 @@
+'''
+Copyright 2024 Pedro Guijas Bravo, Ángel Miguélez Millos, Elena Sánchez González, Héctor Padín Torrente 
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+'''
+
 import os
 import time
 from supabase import create_client, Client
@@ -5,34 +21,6 @@ import logging
 from trainers.db_lora_sdxl import train, get_args
 from inferences.db_lora_sdxl import inference
 
-"""
-export SUPABASE_URL="https://onquttuaucnydonwfoul.supabase.co"
-export SUPABASE_KEY=""
-
-Tables:
-    - jobs
-        - id
-        - created_at
-        - type
-        - status
-        - worker_assigned
-        - model_name
-        - result_path
-        - error_message
-    - hyperparams
-        - job_id
-        - param_name
-        - value
-
-Limpiar cosas que no necesitamos como:
-    - sdxl de la bd -> meterle realitic vision (al final)
-
-Poner validation solo si modo debug
-
-habrá que hashear tb las imágenes subidas x los usuarios
-
-quizá sacar refiner
-"""
 
 # Worker Name
 worker_name = "worker-1"
