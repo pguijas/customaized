@@ -5,7 +5,7 @@
 # 🖌️ CustomAIzed: A SaaS platform for creating image-based custom models
 
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Stars](https://img.shields.io/github/stars/pguijas/customaized?color=green&label=Stars)
 
 CustomAIzed allow its users to generate customized images from models that they know new concepts taught by the user.
